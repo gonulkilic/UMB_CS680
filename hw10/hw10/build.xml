@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="junit" name="Car" basedir=".">
+
+	<property environment = "env"/>
+
+
+	<path id = "CLASSPATH">
+		
+		<pathelement path = "${env.JUNIT}"/>
+		<pathelement path="bin"/>
+		<pathelement path="test/bin"/>
+		
+        
+		<fileset dir="${env.JUNIT}"> 
+		    <include name="*apiguardian*.jar"/> 
+		    <include name="*junit.jupit*.api*.jar"/> 
+		    <include name="*junit.jupit*.engine*.jar"/> 
+		    <include name="*junit.jupit*.params*.jar"/>
+			<include name="*opentest4j*.jar"/>
+		</fileset> 
+	</path>
+
+
+	<target name="run" depends="compile">
+		<java classname="edu.umb.cs.cs680.hw10.*" fork="true">
+			<classpath path="bin" />
+		</java>
+	</target>
+	
+	<target name="junit" depends="compile">		
+		<junitlauncher printSummary="yes">
+		    <classpath refid="CLASSPATH" />
+			<testclasses outputdir="test">
+			    <fileset dir="test/bin">
+				    <include name="edu/umb/cs/cs680/hw10/*Test.class"/>
+				</fileset>
+				<listener type="legacy-plain" sendSysOut="true"/>
+			</testclasses>
+		</junitlauncher>
+	</target>
+	
+	<target name="compile">
+		<delete dir="bin"/>
+		<mkdir dir ="bin"/>
+		<javac includeantruntime="false" srcdir="src" destdir="bin" >
+
+			<classpath refid="CLASSPATH"/>		
+
+		</javac>
+		<delete dir="test/bin"/>
+		<mkdir dir ="test/bin"/>
+		<javac includeantruntime="false" srcdir="test/src" destdir="test/bin" >
+
+			<classpath refid="CLASSPATH"/>
+			
+		</javac>
+
+	</target>
+
+</project>
